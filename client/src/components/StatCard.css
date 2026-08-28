@@ -1,0 +1,26 @@
+.stat-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-soft);
+  padding: 20px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.stat-card__title {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
+
+.stat-card__value {
+  font-size: 30px;
+  font-weight: 800;
+  margin-top: 8px;
+}
+
+.stat-card__hint {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}

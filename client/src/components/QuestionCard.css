@@ -1,0 +1,49 @@
+.question-card__number {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-primary);
+  letter-spacing: 0.03em;
+}
+
+.question-card__text {
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin-top: 10px;
+}
+
+.question-card__options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.question-card__option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border);
+  cursor: pointer;
+  font-size: 15px;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.question-card__option:hover {
+  border-color: var(--color-primary);
+}
+
+.question-card__option.is-selected {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+  font-weight: 700;
+}
+
+.question-card__option input {
+  accent-color: var(--color-primary);
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}

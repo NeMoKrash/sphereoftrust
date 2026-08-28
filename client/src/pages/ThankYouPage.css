@@ -1,0 +1,29 @@
+.thank-you-badge {
+  display: inline-flex;
+  padding: 5px 14px;
+  border-radius: 999px;
+  background: var(--color-low-bg);
+  color: var(--color-low);
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+.contact-box {
+  margin-top: 26px;
+  padding: 18px 20px;
+  border-radius: var(--radius-md);
+  background: var(--color-primary-light);
+}
+
+.contact-box__title {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--color-primary-dark);
+}
+
+.contact-box__line {
+  font-size: 14px;
+  color: var(--color-text-muted);
+  margin-top: 4px;
+}
