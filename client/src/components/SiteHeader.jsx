@@ -14,7 +14,7 @@ export default function SiteHeader() {
 
       <nav className="site-header__nav">
         <Link to="/about">{t('nav.about')}</Link>
-        <Link to="/">{t('nav.survey')}</Link>
+        <Link to="/start">{t('nav.survey')}</Link>
         <Link to="/climate-map">{t('nav.map')}</Link>
         <Link to="/admin/login">{t('nav.admin')}</Link>
       </nav>

@@ -19,7 +19,7 @@ export default function SurveyPage() {
 
   useEffect(() => {
     if (!student.region) {
-      navigate('/')
+      navigate('/start')
       return
     }
 

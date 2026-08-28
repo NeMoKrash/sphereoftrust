@@ -1,51 +1,22 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useSurvey } from '../context/SurveyContext'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { getPublicSummary } from '../api'
 import { useLanguage } from '../context/LanguageContext'
-import { REGIONS } from '../data/regions'
-import { GRADE_LETTERS } from '../data/gradeLetters'
 import SiteHeader from '../components/SiteHeader'
+import StatCard from '../components/StatCard'
 import './HomePage.css'
 
-const GRADES = Array.from({ length: 11 }, (_, i) => i + 1)
-
 export default function HomePage() {
-  const { setStudent, resetSurvey } = useSurvey()
-  const { lang, t } = useLanguage()
-  const navigate = useNavigate()
+  const { t } = useLanguage()
+  const [summary, setSummary] = useState(null)
 
-  const [region, setRegion] = useState('')
-  const [city, setCity] = useState('')
-  const [school, setSchool] = useState('')
-  const [grade, setGrade] = useState('')
-  const [gradeLetter, setGradeLetter] = useState('')
-  const [error, setError] = useState('')
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-
-    if (!region || !city.trim() || !school.trim() || !gradeLetter) {
-      setError(t('form.errorRequired'))
-      return
-    }
-
-    const gradeNumber = Number(grade)
-    if (!Number.isInteger(gradeNumber) || gradeNumber < 1 || gradeNumber > 11) {
-      setError(t('form.errorGrade'))
-      return
-    }
-
-    setError('')
-    resetSurvey()
-    setStudent({
-      region,
-      city: city.trim(),
-      school: school.trim(),
-      grade: gradeNumber,
-      gradeLetter,
-    })
-    navigate('/survey')
-  }
+  useEffect(() => {
+    getPublicSummary()
+      .then(setSummary)
+      .catch(() => {
+        // Публичная статистика необязательна для лендинга — просто не покажем блок
+      })
+  }, [])
 
   return (
     <div className="home-page">
@@ -62,78 +33,31 @@ export default function HomePage() {
               <div className="privacy-badge__title">{t('home.privacyTitle')}</div>
               <div className="privacy-badge__text">{t('home.privacyText')}</div>
             </div>
+
+            <Link to="/start" className="btn btn-primary btn-block" style={{ marginTop: 24 }}>
+              {t('home.cta')}
+            </Link>
           </div>
 
-          <div className="card" style={{ marginTop: 20 }}>
-            <form onSubmit={handleSubmit}>
-              <div className="field">
-                <label htmlFor="region">{t('form.region')}</label>
-                <select id="region" value={region} onChange={(e) => setRegion(e.target.value)}>
-                  <option value="">{t('form.regionPlaceholder')}</option>
-                  {REGIONS.map((r) => (
-                    <option key={r.ru} value={r.ru}>
-                      {lang === 'kz' ? r.kz : r.ru}
-                    </option>
-                  ))}
-                </select>
+          {summary && (
+            <div className="card home-stats">
+              <div className="home-stats__label">{t('home.statsTeaser')}</div>
+              <div className="home-stats__row">
+                <StatCard title={t('map.totalLabel')} value={summary.totalSubmissions} />
+                <StatCard title={t('map.regionsLabel')} value={`${summary.regionsCount} / 20`} />
+                <StatCard title={t('map.schoolsLabel')} value={summary.schoolsCount} />
               </div>
+              <Link to="/climate-map" className="home-link">
+                {t('home.viewMap')}
+              </Link>
+            </div>
+          )}
 
-              <div className="field">
-                <label htmlFor="city">{t('form.city')}</label>
-                <input
-                  id="city"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  placeholder={t('form.cityPlaceholder')}
-                />
-              </div>
-
-              <div className="field">
-                <label htmlFor="school">{t('form.school')}</label>
-                <input
-                  id="school"
-                  value={school}
-                  onChange={(e) => setSchool(e.target.value)}
-                  placeholder={t('form.schoolPlaceholder')}
-                />
-              </div>
-
-              <div className="field-row">
-                <div className="field">
-                  <label htmlFor="grade">{t('form.grade')}</label>
-                  <select id="grade" value={grade} onChange={(e) => setGrade(e.target.value)}>
-                    <option value="">—</option>
-                    {GRADES.map((g) => (
-                      <option key={g} value={g}>
-                        {g}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="field">
-                  <label htmlFor="gradeLetter">{t('form.gradeLetter')}</label>
-                  <select
-                    id="gradeLetter"
-                    value={gradeLetter}
-                    onChange={(e) => setGradeLetter(e.target.value)}
-                  >
-                    <option value="">—</option>
-                    {GRADE_LETTERS.map((letter) => (
-                      <option key={letter} value={letter}>
-                        {letter}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              {error && <div className="field-error" style={{ marginTop: 14 }}>{error}</div>}
-
-              <button type="submit" className="btn btn-primary btn-block" style={{ marginTop: 26 }}>
-                {t('form.start')}
-              </button>
-            </form>
+          <div className="card home-methodology">
+            <p>{t('home.methodologyTeaser')}</p>
+            <Link to="/about" className="home-link">
+              {t('home.learnMore')}
+            </Link>
           </div>
         </div>
       </div>
