@@ -8,6 +8,7 @@ import SiteHeader from '../components/SiteHeader'
 import './StartPage.css'
 
 const GRADES = Array.from({ length: 11 }, (_, i) => i + 1)
+const CITY_REGIONS = ['город Астана', 'город Алматы', 'город Шымкент']
 
 export default function StartPage() {
   const { setStudent, resetSurvey } = useSurvey()
@@ -20,6 +21,14 @@ export default function StartPage() {
   const [grade, setGrade] = useState('')
   const [gradeLetter, setGradeLetter] = useState('')
   const [error, setError] = useState('')
+
+  const isCityRegion = CITY_REGIONS.includes(region)
+  const cityLabel = !region ? t('form.city') : isCityRegion ? t('form.district') : t('form.town')
+  const cityPlaceholder = !region
+    ? t('form.cityPlaceholder')
+    : isCityRegion
+      ? t('form.districtPlaceholder')
+      : t('form.townPlaceholder')
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -72,12 +81,13 @@ export default function StartPage() {
               </div>
 
               <div className="field">
-                <label htmlFor="city">{t('form.city')}</label>
+                <label htmlFor="city">{cityLabel}</label>
                 <input
                   id="city"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  placeholder={t('form.cityPlaceholder')}
+                  placeholder={cityPlaceholder}
+                  disabled={!region}
                 />
               </div>
 
