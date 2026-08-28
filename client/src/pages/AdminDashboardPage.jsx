@@ -62,7 +62,7 @@ export default function AdminDashboardPage() {
         <div className="dashboard__school card">
           <div className="dashboard__school-label">Ваша школа</div>
           <div className="dashboard__school-value">
-            {me.school}, {me.city}, {me.region}
+            Школа №{me.school}, {me.city}, {me.region}
           </div>
         </div>
       )}

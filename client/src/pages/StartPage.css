@@ -6,3 +6,34 @@
 .field-row .field {
   flex: 1;
 }
+
+.input-with-prefix {
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface);
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+
+.input-with-prefix:focus-within {
+  border-color: var(--color-primary);
+}
+
+.input-with-prefix__symbol {
+  padding: 12px 0 12px 14px;
+  font-size: 16px;
+  color: var(--color-text-muted);
+  font-weight: 700;
+}
+
+.input-with-prefix input {
+  border: none !important;
+  flex: 1;
+  min-width: 0;
+}
+
+.input-with-prefix input:focus {
+  border: none !important;
+}

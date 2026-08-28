@@ -46,7 +46,7 @@ export default function ClimateMapPage() {
             <>
               <div className="climate-stat-row">
                 <StatCard title={t('map.totalLabel')} value={summary.totalSubmissions} />
-                <StatCard title={t('map.regionsLabel')} value={`${summary.regionsCount} / 20`} />
+                <StatCard title={t('map.regionsLabel')} value={`${summary.regionsCount} / ${REGIONS.length}`} />
                 <StatCard title={t('map.schoolsLabel')} value={summary.schoolsCount} />
               </div>
 

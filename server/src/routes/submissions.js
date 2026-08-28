@@ -20,6 +20,10 @@ router.post('/', async (req, res) => {
     return res.status(400).json({ error: 'Выберите букву класса из списка' });
   }
 
+  if (!/^\d+$/.test(String(school).trim())) {
+    return res.status(400).json({ error: 'Номер школы должен быть числом' });
+  }
+
   const gradeNumber = Number(grade);
   if (!Number.isInteger(gradeNumber) || gradeNumber < 1 || gradeNumber > 11) {
     return res.status(400).json({ error: 'Класс должен быть числом от 1 до 11' });

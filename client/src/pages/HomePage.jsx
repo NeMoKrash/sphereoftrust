@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getPublicSummary } from '../api'
 import { useLanguage } from '../context/LanguageContext'
+import { REGIONS } from '../data/regions'
 import SiteHeader from '../components/SiteHeader'
 import StatCard from '../components/StatCard'
 import './HomePage.css'
@@ -44,7 +45,7 @@ export default function HomePage() {
               <div className="home-stats__label">{t('home.statsTeaser')}</div>
               <div className="home-stats__row">
                 <StatCard title={t('map.totalLabel')} value={summary.totalSubmissions} />
-                <StatCard title={t('map.regionsLabel')} value={`${summary.regionsCount} / 20`} />
+                <StatCard title={t('map.regionsLabel')} value={`${summary.regionsCount} / ${REGIONS.length}`} />
                 <StatCard title={t('map.schoolsLabel')} value={summary.schoolsCount} />
               </div>
               <Link to="/climate-map" className="home-link">

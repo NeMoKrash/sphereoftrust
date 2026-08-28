@@ -8,7 +8,7 @@ import SiteHeader from '../components/SiteHeader'
 import './StartPage.css'
 
 const GRADES = Array.from({ length: 11 }, (_, i) => i + 1)
-const CITY_REGIONS = ['город Астана', 'город Алматы', 'город Шымкент']
+const OTHER_CITY = '__other__'
 
 export default function StartPage() {
   const { setStudent, resetSurvey } = useSurvey()
@@ -17,23 +17,27 @@ export default function StartPage() {
 
   const [region, setRegion] = useState('')
   const [city, setCity] = useState('')
+  const [cityOther, setCityOther] = useState('')
   const [school, setSchool] = useState('')
   const [grade, setGrade] = useState('')
   const [gradeLetter, setGradeLetter] = useState('')
   const [error, setError] = useState('')
 
-  const isCityRegion = CITY_REGIONS.includes(region)
-  const cityLabel = !region ? t('form.city') : isCityRegion ? t('form.district') : t('form.town')
-  const cityPlaceholder = !region
-    ? t('form.cityPlaceholder')
-    : isCityRegion
-      ? t('form.districtPlaceholder')
-      : t('form.townPlaceholder')
+  const regionData = REGIONS.find((r) => r.ru === region)
+  const isOtherCity = city === OTHER_CITY
+
+  const handleRegionChange = (value) => {
+    setRegion(value)
+    setCity('')
+    setCityOther('')
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    if (!region || !city.trim() || !school.trim() || !gradeLetter) {
+    const finalCity = isOtherCity ? cityOther.trim() : city
+
+    if (!region || !finalCity || !school.trim() || !gradeLetter) {
       setError(t('form.errorRequired'))
       return
     }
@@ -48,7 +52,7 @@ export default function StartPage() {
     resetSurvey()
     setStudent({
       region,
-      city: city.trim(),
+      city: finalCity,
       school: school.trim(),
       grade: gradeNumber,
       gradeLetter,
@@ -70,7 +74,7 @@ export default function StartPage() {
             <form onSubmit={handleSubmit}>
               <div className="field">
                 <label htmlFor="region">{t('form.region')}</label>
-                <select id="region" value={region} onChange={(e) => setRegion(e.target.value)}>
+                <select id="region" value={region} onChange={(e) => handleRegionChange(e.target.value)}>
                   <option value="">{t('form.regionPlaceholder')}</option>
                   {REGIONS.map((r) => (
                     <option key={r.ru} value={r.ru}>
@@ -81,24 +85,44 @@ export default function StartPage() {
               </div>
 
               <div className="field">
-                <label htmlFor="city">{cityLabel}</label>
-                <input
+                <label htmlFor="city">{t('form.city')}</label>
+                <select
                   id="city"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  placeholder={cityPlaceholder}
                   disabled={!region}
-                />
+                >
+                  <option value="">{t('form.cityPlaceholder')}</option>
+                  {regionData?.cities.map((c) => (
+                    <option key={c.ru} value={c.ru}>
+                      {lang === 'kz' ? c.kz : c.ru}
+                    </option>
+                  ))}
+                  <option value={OTHER_CITY}>{t('form.cityOther')}</option>
+                </select>
+
+                {isOtherCity && (
+                  <input
+                    style={{ marginTop: 10 }}
+                    value={cityOther}
+                    onChange={(e) => setCityOther(e.target.value)}
+                    placeholder={t('form.cityOtherPlaceholder')}
+                  />
+                )}
               </div>
 
               <div className="field">
                 <label htmlFor="school">{t('form.school')}</label>
-                <input
-                  id="school"
-                  value={school}
-                  onChange={(e) => setSchool(e.target.value)}
-                  placeholder={t('form.schoolPlaceholder')}
-                />
+                <div className="input-with-prefix">
+                  <span className="input-with-prefix__symbol">№</span>
+                  <input
+                    id="school"
+                    value={school}
+                    onChange={(e) => setSchool(e.target.value.replace(/\D/g, ''))}
+                    placeholder={t('form.schoolPlaceholder')}
+                    inputMode="numeric"
+                  />
+                </div>
               </div>
 
               <div className="field-row">
