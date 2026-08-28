@@ -1,15 +1,37 @@
-.admin-entry {
-  text-align: center;
+.home-page {
+  min-height: 100%;
+}
+
+.home-hero .subtitle {
+  margin-top: 12px;
+}
+
+.privacy-badge {
   margin-top: 22px;
+  padding: 16px 18px;
+  border-radius: var(--radius-md);
+  background: var(--color-low-bg);
+  border: 1px solid rgba(76, 175, 130, 0.25);
+}
+
+.privacy-badge__title {
+  font-weight: 800;
   font-size: 14px;
+  color: var(--color-low);
 }
 
-.admin-entry a {
+.privacy-badge__text {
+  font-size: 13px;
   color: var(--color-text-muted);
-  text-decoration: none;
+  margin-top: 4px;
+  line-height: 1.5;
 }
 
-.admin-entry a:hover {
-  color: var(--color-primary);
-  text-decoration: underline;
+.field-row {
+  display: flex;
+  gap: 16px;
+}
+
+.field-row .field {
+  flex: 1;
 }

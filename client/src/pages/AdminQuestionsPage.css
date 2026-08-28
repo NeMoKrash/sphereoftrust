@@ -27,6 +27,13 @@
   gap: 12px;
 }
 
+.question-row__fieldLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  margin-bottom: -4px;
+}
+
 .question-row__fields textarea {
   font-family: inherit;
   font-size: 15px;

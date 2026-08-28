@@ -10,12 +10,18 @@ const VICTIMIZATION_QUESTIONS = [7, 10, 11, 13];
 const ISOLATION_QUESTIONS = [8, 9, 12];
 
 router.get('/', requireAdmin, async (req, res) => {
-  const { city, school, grade } = req.query;
+  const { grade, gradeLetter } = req.query;
 
-  const where = {};
-  if (city) where.city = city;
-  if (school) where.school = school;
+  // Психолог видит только анкеты своей школы — регион/город/школа берутся
+  // из его собственной учётной записи, а не из query, чтобы нельзя было
+  // подменить параметры и заглянуть в чужую школу.
+  const where = {
+    region: req.admin.region,
+    city: req.admin.city,
+    school: req.admin.school,
+  };
   if (grade) where.grade = Number(grade);
+  if (gradeLetter) where.gradeLetter = gradeLetter;
 
   const submissions = await prisma.submission.findMany({
     where,
@@ -27,19 +33,6 @@ router.get('/', requireAdmin, async (req, res) => {
     orderBy: { createdAt: 'desc' },
   });
 
-  const allCities = await prisma.submission.findMany({
-    distinct: ['city'],
-    select: { city: true },
-    orderBy: { city: 'asc' },
-  });
-  const schoolsInCity = await prisma.submission.findMany({
-    where: city ? { city } : {},
-    distinct: ['school'],
-    select: { school: true },
-    orderBy: { school: 'asc' },
-  });
-
-  // Считаем баллы по 4 шкалам и "сырые" баллы по номерам вопросов для каждой анкеты
   const perSubmission = submissions.map((s) => {
     const answersWithScale = s.answers.map((a) => ({ score: a.score, scale: a.question.scale }));
     const scales = calcScales(answersWithScale);
@@ -49,9 +42,8 @@ router.get('/', requireAdmin, async (req, res) => {
 
     return {
       id: s.id,
-      city: s.city,
-      school: s.school,
       grade: s.grade,
+      gradeLetter: s.gradeLetter,
       createdAt: s.createdAt,
       scales,
       byNumber,
@@ -88,9 +80,8 @@ router.get('/', requireAdmin, async (req, res) => {
   const safetyIndex = total ? Math.round((safeCount / total) * 1000) / 10 : 0;
 
   res.json({
+    school: { region: req.admin.region, city: req.admin.city, school: req.admin.school },
     total,
-    cities: allCities.map((c) => c.city),
-    schools: schoolsInCity.map((s) => s.school),
     scaleAverages,
     riskCounts,
     maps: {

@@ -2,11 +2,13 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { getQuestions, submitSurvey } from '../api'
 import { useSurvey } from '../context/SurveyContext'
+import { useLanguage } from '../context/LanguageContext'
 import QuestionCard from '../components/QuestionCard'
 import './SurveyPage.css'
 
 export default function SurveyPage() {
   const { student, answers, answerQuestion } = useSurvey()
+  const { lang, t } = useLanguage()
   const navigate = useNavigate()
 
   const [questions, setQuestions] = useState([])
@@ -16,7 +18,7 @@ export default function SurveyPage() {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    if (!student.city) {
+    if (!student.region) {
       navigate('/')
       return
     }
@@ -25,12 +27,12 @@ export default function SurveyPage() {
       .then(setQuestions)
       .catch(() => setError('Не удалось загрузить вопросы. Обновите страницу.'))
       .finally(() => setLoading(false))
-  }, [student.city, navigate])
+  }, [student.region, navigate])
 
   if (loading) {
     return (
       <div className="page">
-        <p className="subtitle">Загрузка вопросов…</p>
+        <p className="subtitle">{t('survey.loading')}</p>
       </div>
     )
   }
@@ -52,6 +54,7 @@ export default function SurveyPage() {
   }
 
   const question = questions[index]
+  const questionText = lang === 'kz' && question.textKz ? question.textKz : question.text
   const currentValue = answers[question.id]
   const isLast = index === questions.length - 1
   const progress = Math.round(((index + 1) / questions.length) * 100)
@@ -68,9 +71,11 @@ export default function SurveyPage() {
     setError('')
     try {
       await submitSurvey({
+        region: student.region,
         city: student.city,
         school: student.school,
         grade: student.grade,
+        gradeLetter: student.gradeLetter,
         answers: questions.map((q) => ({ questionId: q.id, score: answers[q.id] })),
       })
       navigate('/thank-you')
@@ -90,7 +95,8 @@ export default function SurveyPage() {
         <div className="card">
           <QuestionCard
             number={question.number}
-            text={question.text}
+            total={questions.length}
+            text={questionText}
             value={currentValue}
             onChange={(score) => answerQuestion(question.id, score)}
           />
@@ -104,7 +110,7 @@ export default function SurveyPage() {
               onClick={() => setIndex((i) => Math.max(0, i - 1))}
               disabled={index === 0 || submitting}
             >
-              Назад
+              {t('survey.back')}
             </button>
             <button
               type="button"
@@ -112,7 +118,7 @@ export default function SurveyPage() {
               onClick={handleNext}
               disabled={currentValue === undefined || submitting}
             >
-              {isLast ? (submitting ? 'Отправляем…' : 'Завершить опрос') : 'Далее'}
+              {isLast ? (submitting ? t('survey.submitting') : t('survey.finish')) : t('survey.next')}
             </button>
           </div>
         </div>

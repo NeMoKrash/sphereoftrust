@@ -1,0 +1,55 @@
+.climate-stat-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.region-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.region-card {
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--color-border);
+}
+
+.region-card__name {
+  font-size: 13px;
+  font-weight: 700;
+  min-height: 36px;
+}
+
+.region-card__index {
+  font-size: 26px;
+  font-weight: 800;
+  margin-top: 10px;
+}
+
+.region-card__index--low {
+  color: var(--color-high);
+}
+
+.region-card__index--medium {
+  color: var(--color-medium);
+}
+
+.region-card__index--high {
+  color: var(--color-low);
+}
+
+.region-card__count {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+}
+
+.region-card__empty {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-top: 10px;
+}

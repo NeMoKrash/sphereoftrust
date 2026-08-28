@@ -6,6 +6,7 @@ const questionsRouter = require('./routes/questions');
 const submissionsRouter = require('./routes/submissions');
 const adminRouter = require('./routes/admin');
 const statsRouter = require('./routes/stats');
+const publicRouter = require('./routes/public');
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use('/api/questions', questionsRouter);
 app.use('/api/submissions', submissionsRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/admin/stats', statsRouter);
+app.use('/api/public', publicRouter);
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 

@@ -4,6 +4,24 @@
   gap: 22px;
 }
 
+.dashboard__school {
+  padding: 16px 24px;
+}
+
+.dashboard__school-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.dashboard__school-value {
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
 .dashboard__filters {
   display: flex;
   gap: 20px;

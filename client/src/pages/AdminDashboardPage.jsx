@@ -1,35 +1,51 @@
 import { useEffect, useState } from 'react'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { useNavigate } from 'react-router-dom'
-import { getStats } from '../api'
+import { getAdminMe, getStats } from '../api'
 import { clearToken, getToken } from '../adminAuth'
+import { GRADE_LETTERS } from '../data/gradeLetters'
 import StatCard from '../components/StatCard'
 import ScaleGauge from '../components/ScaleGauge'
 import './AdminDashboardPage.css'
+
+const GRADES = Array.from({ length: 11 }, (_, i) => i + 1)
 
 export default function AdminDashboardPage() {
   const navigate = useNavigate()
   const token = getToken()
 
+  const [me, setMe] = useState(null)
   const [stats, setStats] = useState(null)
-  const [city, setCity] = useState('')
-  const [school, setSchool] = useState('')
   const [grade, setGrade] = useState('')
+  const [gradeLetter, setGradeLetter] = useState('')
   const [error, setError] = useState('')
 
+  const handleAuthError = (err) => {
+    if (err.message.toLowerCase().includes('токен')) {
+      clearToken()
+      navigate('/admin/login')
+      return true
+    }
+    return false
+  }
+
   useEffect(() => {
-    getStats(token, { city, school, grade })
-      .then(setStats)
+    getAdminMe(token)
+      .then(setMe)
       .catch((err) => {
-        if (err.message.toLowerCase().includes('токен')) {
-          clearToken()
-          navigate('/admin/login')
-          return
-        }
-        setError(err.message)
+        if (!handleAuthError(err)) setError(err.message)
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [city, school, grade])
+  }, [])
+
+  useEffect(() => {
+    getStats(token, { grade, gradeLetter })
+      .then(setStats)
+      .catch((err) => {
+        if (!handleAuthError(err)) setError(err.message)
+      })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [grade, gradeLetter])
 
   if (error) return <p className="field-error">{error}</p>
   if (!stats) return <p className="subtitle">Загрузка статистики…</p>
@@ -42,47 +58,38 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="dashboard">
+      {me && (
+        <div className="dashboard__school card">
+          <div className="dashboard__school-label">Ваша школа</div>
+          <div className="dashboard__school-value">
+            {me.school}, {me.city}, {me.region}
+          </div>
+        </div>
+      )}
+
       <div className="dashboard__filters card">
         <div className="field">
-          <label>Город</label>
-          <select
-            value={city}
-            onChange={(e) => {
-              setCity(e.target.value)
-              setSchool('')
-            }}
-          >
-            <option value="">Все города</option>
-            {stats.cities.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="field">
-          <label>Школа</label>
-          <select value={school} onChange={(e) => setSchool(e.target.value)}>
-            <option value="">Все школы</option>
-            {stats.schools.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="field">
           <label>Класс</label>
-          <input
-            type="number"
-            min="1"
-            max="11"
-            value={grade}
-            onChange={(e) => setGrade(e.target.value)}
-            placeholder="Все классы"
-          />
+          <select value={grade} onChange={(e) => setGrade(e.target.value)}>
+            <option value="">Все классы</option>
+            {GRADES.map((g) => (
+              <option key={g} value={g}>
+                {g}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="field">
+          <label>Буква</label>
+          <select value={gradeLetter} onChange={(e) => setGradeLetter(e.target.value)}>
+            <option value="">Все буквы</option>
+            {GRADE_LETTERS.map((l) => (
+              <option key={l} value={l}>
+                {l}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -137,8 +144,6 @@ export default function AdminDashboardPage() {
               <thead>
                 <tr>
                   <th>Дата</th>
-                  <th>Город</th>
-                  <th>Школа</th>
                   <th>Класс</th>
                   <th>Прямая викт.</th>
                   <th>Косв. викт.</th>
@@ -150,9 +155,10 @@ export default function AdminDashboardPage() {
                 {stats.submissions.map((s) => (
                   <tr key={s.id}>
                     <td>{new Date(s.createdAt).toLocaleDateString('ru-RU')}</td>
-                    <td>{s.city}</td>
-                    <td>{s.school}</td>
-                    <td>{s.grade}</td>
+                    <td>
+                      {s.grade}
+                      {s.gradeLetter}
+                    </td>
                     <td>{s.scales.direct_victim.score.toFixed(2)}</td>
                     <td>{s.scales.indirect_victim.score.toFixed(2)}</td>
                     <td>{s.scales.direct_aggressor.score.toFixed(2)}</td>

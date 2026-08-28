@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
   const questions = await prisma.question.findMany({
     where: { active: true },
     orderBy: { number: 'asc' },
-    select: { id: true, number: true, text: true },
+    select: { id: true, number: true, text: true, textKz: true },
   });
   res.json(questions);
 });

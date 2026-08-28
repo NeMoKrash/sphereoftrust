@@ -40,6 +40,10 @@ export function adminLogin(username, password) {
   })
 }
 
+export function getAdminMe(token) {
+  return request('/admin/me', { headers: authHeaders(token) })
+}
+
 export function getAdminQuestions(token) {
   return request('/admin/questions', { headers: authHeaders(token) })
 }
@@ -54,11 +58,14 @@ export function updateAdminQuestion(token, id, changes) {
 
 export function getStats(token, filters = {}) {
   const params = new URLSearchParams()
-  if (filters.city) params.set('city', filters.city)
-  if (filters.school) params.set('school', filters.school)
   if (filters.grade) params.set('grade', filters.grade)
+  if (filters.gradeLetter) params.set('gradeLetter', filters.gradeLetter)
   const query = params.toString()
   return request(`/admin/stats${query ? `?${query}` : ''}`, {
     headers: authHeaders(token),
   })
+}
+
+export function getPublicSummary() {
+  return request('/public/summary')
 }

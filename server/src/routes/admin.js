@@ -27,6 +27,11 @@ router.post('/login', async (req, res) => {
   res.json({ token, username: admin.username });
 });
 
+router.get('/me', requireAdmin, async (req, res) => {
+  const { username, region, city, school } = req.admin;
+  res.json({ username, region, city, school });
+});
+
 router.get('/questions', requireAdmin, async (req, res) => {
   const questions = await prisma.question.findMany({ orderBy: { number: 'asc' } });
   res.json({ questions, scales: SCALES });
@@ -34,7 +39,7 @@ router.get('/questions', requireAdmin, async (req, res) => {
 
 router.put('/questions/:id', requireAdmin, async (req, res) => {
   const { id } = req.params;
-  const { text, scale, active } = req.body;
+  const { text, textKz, scale, active } = req.body;
 
   if (scale !== undefined && !SCALES[scale]) {
     return res.status(400).json({ error: 'Неизвестная шкала' });
@@ -44,6 +49,7 @@ router.put('/questions/:id', requireAdmin, async (req, res) => {
     where: { id: Number(id) },
     data: {
       ...(text !== undefined ? { text } : {}),
+      ...(textKz !== undefined ? { textKz } : {}),
       ...(scale !== undefined ? { scale } : {}),
       ...(active !== undefined ? { active: Boolean(active) } : {}),
     },

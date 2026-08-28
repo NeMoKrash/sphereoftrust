@@ -3,7 +3,13 @@ import { createContext, useContext, useMemo, useState } from 'react'
 const SurveyContext = createContext(null)
 
 export function SurveyProvider({ children }) {
-  const [student, setStudent] = useState({ city: '', school: '', grade: '' })
+  const [student, setStudent] = useState({
+    region: '',
+    city: '',
+    school: '',
+    grade: '',
+    gradeLetter: '',
+  })
   const [answers, setAnswers] = useState({})
 
   const value = useMemo(

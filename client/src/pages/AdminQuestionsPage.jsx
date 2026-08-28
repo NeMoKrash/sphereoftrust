@@ -40,6 +40,7 @@ export default function AdminQuestionsPage() {
     try {
       await updateAdminQuestion(token, question.id, {
         text: question.text,
+        textKz: question.textKz,
         scale: question.scale,
         active: question.active,
       })
@@ -69,9 +70,17 @@ export default function AdminQuestionsPage() {
             <div className="question-row__number">№{q.number}</div>
 
             <div className="question-row__fields">
+              <label className="question-row__fieldLabel">Текст (RU)</label>
               <textarea
                 value={q.text}
                 onChange={(e) => updateLocal(q.id, { text: e.target.value })}
+                rows={2}
+              />
+
+              <label className="question-row__fieldLabel">Текст (KZ)</label>
+              <textarea
+                value={q.textKz || ''}
+                onChange={(e) => updateLocal(q.id, { textKz: e.target.value })}
                 rows={2}
               />
 

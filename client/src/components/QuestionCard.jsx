@@ -1,21 +1,26 @@
+import { useLanguage } from '../context/LanguageContext'
 import './QuestionCard.css'
 
-const OPTIONS = [
-  { score: 0, label: 'Никогда не было' },
-  { score: 1, label: 'Было раз' },
-  { score: 2, label: 'Бывает иногда' },
-  { score: 3, label: 'Бывает раз в неделю' },
-  { score: 4, label: 'Бывает несколько раз в неделю' },
+const OPTION_KEYS = [
+  { score: 0, key: 'option.never' },
+  { score: 1, key: 'option.once' },
+  { score: 2, key: 'option.sometimes' },
+  { score: 3, key: 'option.weekly' },
+  { score: 4, key: 'option.multiWeekly' },
 ]
 
-export default function QuestionCard({ number, text, value, onChange }) {
+export default function QuestionCard({ number, total, text, value, onChange }) {
+  const { t } = useLanguage()
+
   return (
     <div className="question-card">
-      <div className="question-card__number">Вопрос {number} из 13</div>
+      <div className="question-card__number">
+        {t('survey.question')} {number} {t('survey.of')} {total}
+      </div>
       <div className="question-card__text">{text}</div>
 
       <div className="question-card__options">
-        {OPTIONS.map((opt) => (
+        {OPTION_KEYS.map((opt) => (
           <label
             key={opt.score}
             className={`question-card__option${value === opt.score ? ' is-selected' : ''}`}
@@ -26,7 +31,7 @@ export default function QuestionCard({ number, text, value, onChange }) {
               checked={value === opt.score}
               onChange={() => onChange(opt.score)}
             />
-            <span>{opt.label}</span>
+            <span>{t(opt.key)}</span>
           </label>
         ))}
       </div>
