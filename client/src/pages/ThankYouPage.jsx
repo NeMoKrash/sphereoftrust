@@ -13,12 +13,6 @@ export default function ThankYouPage() {
             помни, что ты всегда можешь обратиться к психологической службе.
           </p>
 
-          <div className="contact-box">
-            <div className="contact-box__title">Психологическая служба школы</div>
-            <div className="contact-box__line">Кабинет 205, 2 этаж</div>
-            <div className="contact-box__line">Приём: Пн–Пт, 9:00–15:00</div>
-          </div>
-
           <Link to="/" className="btn btn-ghost btn-block" style={{ marginTop: 24 }}>
             На главную
           </Link>
