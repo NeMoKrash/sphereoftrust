@@ -6,6 +6,7 @@ import { REGIONS } from '../data/regions'
 import './SuperAdminAdminsPage.css'
 
 const emptyForm = { username: '', password: '', region: '', city: '', school: '' }
+const OTHER_CITY = '__other__'
 
 export default function SuperAdminAdminsPage() {
   const navigate = useNavigate()
@@ -13,9 +14,13 @@ export default function SuperAdminAdminsPage() {
 
   const [admins, setAdmins] = useState([])
   const [form, setForm] = useState(emptyForm)
+  const [cityOther, setCityOther] = useState('')
   const [error, setError] = useState('')
   const [formError, setFormError] = useState('')
   const [saving, setSaving] = useState(false)
+
+  const regionData = REGIONS.find((r) => r.ru === form.region)
+  const isOtherCity = form.city === OTHER_CITY
 
   const load = () => {
     getSuperAdminAdmins(token)
@@ -32,13 +37,20 @@ export default function SuperAdminAdminsPage() {
 
   useEffect(load, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const handleRegionChange = (value) => {
+    setForm({ ...form, region: value, city: '' })
+    setCityOther('')
+  }
+
   const handleCreate = async (e) => {
     e.preventDefault()
     setFormError('')
     setSaving(true)
     try {
-      await createSuperAdminAdmin(token, form)
+      const finalCity = isOtherCity ? cityOther.trim() : form.city
+      await createSuperAdminAdmin(token, { ...form, city: finalCity })
       setForm(emptyForm)
+      setCityOther('')
       load()
     } catch (err) {
       setFormError(err.message)
@@ -84,11 +96,7 @@ export default function SuperAdminAdminsPage() {
 
           <div className="field">
             <label>Область</label>
-            <select
-              value={form.region}
-              onChange={(e) => setForm({ ...form, region: e.target.value })}
-              required
-            >
+            <select value={form.region} onChange={(e) => handleRegionChange(e.target.value)} required>
               <option value="">Выберите область</option>
               {REGIONS.map((r) => (
                 <option key={r.ru} value={r.ru}>
@@ -101,13 +109,31 @@ export default function SuperAdminAdminsPage() {
           <div className="field-row">
             <div className="field">
               <label>Город / район</label>
-              <input
+              <select
                 value={form.city}
                 onChange={(e) => setForm({ ...form, city: e.target.value })}
-                placeholder="Например, город Алматы"
+                disabled={!form.region}
                 required
-              />
+              >
+                <option value="">Выберите населённый пункт</option>
+                {regionData?.cities.map((c) => (
+                  <option key={c.ru} value={c.ru}>
+                    {c.ru}
+                  </option>
+                ))}
+                <option value={OTHER_CITY}>Другой (не из списка)</option>
+              </select>
+
+              {isOtherCity && (
+                <input
+                  style={{ marginTop: 10 }}
+                  value={cityOther}
+                  onChange={(e) => setCityOther(e.target.value)}
+                  placeholder="Впишите название"
+                />
+              )}
             </div>
+
             <div className="field">
               <label>Номер школы</label>
               <input
