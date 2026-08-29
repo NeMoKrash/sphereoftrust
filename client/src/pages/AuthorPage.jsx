@@ -10,11 +10,11 @@ export default function AuthorPage() {
         <div className="page-narrow">
           <div className="card author-card">
             <div className="author-card__line">
-              <span className="author-card__label">Автор</span>
-              Абенов Эрик, 10В, школа №48
+              <span className="author-card__label">Автор:</span>
+              Абенов Эрик, 10В, Лицей №48
             </div>
             <div className="author-card__line">
-              <span className="author-card__label">Руководитель</span>
+              <span className="author-card__label">Руководитель:</span>
               Айтуова Лаззат Рахматуллаевна
             </div>
           </div>
