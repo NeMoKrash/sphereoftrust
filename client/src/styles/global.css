@@ -58,6 +58,16 @@ button {
   padding: 32px;
 }
 
+@media (max-width: 640px) {
+  .page {
+    padding: 24px 14px 40px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+}
+
 .eyebrow {
   font-size: 13px;
   font-weight: 700;

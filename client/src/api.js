@@ -69,3 +69,34 @@ export function getStats(token, filters = {}) {
 export function getPublicSummary() {
   return request('/public/summary')
 }
+
+export function getSuperAdminAdmins(token) {
+  return request('/superadmin/admins', { headers: authHeaders(token) })
+}
+
+export function createSuperAdminAdmin(token, data) {
+  return request('/superadmin/admins', {
+    method: 'POST',
+    headers: authHeaders(token),
+    body: JSON.stringify(data),
+  })
+}
+
+export function deleteSuperAdminAdmin(token, id) {
+  return request(`/superadmin/admins/${id}`, {
+    method: 'DELETE',
+    headers: authHeaders(token),
+  })
+}
+
+export function getSuperAdminStats(token, filters = {}) {
+  const params = new URLSearchParams()
+  if (filters.region) params.set('region', filters.region)
+  if (filters.school) params.set('school', filters.school)
+  if (filters.grade) params.set('grade', filters.grade)
+  if (filters.gradeLetter) params.set('gradeLetter', filters.gradeLetter)
+  const query = params.toString()
+  return request(`/superadmin/stats${query ? `?${query}` : ''}`, {
+    headers: authHeaders(token),
+  })
+}

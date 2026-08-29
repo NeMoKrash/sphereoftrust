@@ -15,9 +15,9 @@ export default function AdminLoginPage() {
     setError('')
     setLoading(true)
     try {
-      const { token } = await adminLogin(username, password)
+      const { token, isSuperAdmin } = await adminLogin(username, password)
       setToken(token)
-      navigate('/admin')
+      navigate(isSuperAdmin ? '/superadmin' : '/admin')
     } catch (err) {
       setError(err.message)
     } finally {

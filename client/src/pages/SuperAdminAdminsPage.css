@@ -1,0 +1,11 @@
+@import './AdminDashboardPage.css';
+
+.field-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.field-row .field {
+  flex: 1;
+}

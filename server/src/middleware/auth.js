@@ -24,4 +24,13 @@ async function requireAdmin(req, res, next) {
   }
 }
 
-module.exports = { requireAdmin };
+function requireSuperAdmin(req, res, next) {
+  requireAdmin(req, res, () => {
+    if (!req.admin.isSuperAdmin) {
+      return res.status(403).json({ error: 'Доступ только для супер-администратора' });
+    }
+    next();
+  });
+}
+
+module.exports = { requireAdmin, requireSuperAdmin };

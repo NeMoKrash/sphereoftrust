@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import SiteHeader from '../components/SiteHeader'
 import './AboutPage.css'
@@ -24,6 +25,10 @@ export default function AboutPage() {
               <h2>{t('about.methodologyTitle')}</h2>
               <p>{t('about.methodologyText')}</p>
             </section>
+
+            <Link to="/author" className="about-authors-link">
+              Об авторах проекта →
+            </Link>
           </div>
         </div>
       </div>

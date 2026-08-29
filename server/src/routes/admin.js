@@ -24,12 +24,12 @@ router.post('/login', async (req, res) => {
     expiresIn: '12h',
   });
 
-  res.json({ token, username: admin.username });
+  res.json({ token, username: admin.username, isSuperAdmin: admin.isSuperAdmin });
 });
 
 router.get('/me', requireAdmin, async (req, res) => {
-  const { username, region, city, school } = req.admin;
-  res.json({ username, region, city, school });
+  const { username, region, city, school, isSuperAdmin } = req.admin;
+  res.json({ username, region, city, school, isSuperAdmin });
 });
 
 router.get('/questions', requireAdmin, async (req, res) => {

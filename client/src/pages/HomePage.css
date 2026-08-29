@@ -6,6 +6,18 @@
   margin-top: 12px;
 }
 
+.hero-title {
+  font-size: 44px;
+  color: var(--color-primary);
+  margin-top: 4px;
+}
+
+@media (max-width: 640px) {
+  .hero-title {
+    font-size: 32px;
+  }
+}
+
 .privacy-badge {
   margin-top: 22px;
   padding: 16px 18px;

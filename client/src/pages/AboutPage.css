@@ -13,3 +13,16 @@
   font-size: 15px;
   line-height: 1.6;
 }
+
+.about-authors-link {
+  display: inline-block;
+  margin-top: 28px;
+  font-size: 13px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.about-authors-link:hover {
+  color: var(--color-primary);
+  text-decoration: underline;
+}

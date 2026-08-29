@@ -26,8 +26,8 @@ export default function HomePage() {
       <div className="page">
         <div className="page-narrow">
           <div className="card home-hero">
-            <div className="eyebrow">{t('home.eyebrow')}</div>
-            <h1 className="title">{t('home.title')}</h1>
+            <div className="eyebrow">{t('home.title')}</div>
+            <h1 className="title hero-title">{t('siteName')}</h1>
             <p className="subtitle">{t('home.subtitle')}</p>
 
             <div className="privacy-badge">

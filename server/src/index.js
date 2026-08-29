@@ -7,6 +7,7 @@ const submissionsRouter = require('./routes/submissions');
 const adminRouter = require('./routes/admin');
 const statsRouter = require('./routes/stats');
 const publicRouter = require('./routes/public');
+const superadminRouter = require('./routes/superadmin');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use('/api/submissions', submissionsRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/admin/stats', statsRouter);
 app.use('/api/public', publicRouter);
+app.use('/api/superadmin', superadminRouter);
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
 

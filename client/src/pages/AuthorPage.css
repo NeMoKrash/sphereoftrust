@@ -1,0 +1,18 @@
+.author-card__line {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.author-card__line + .author-card__line {
+  margin-top: 14px;
+}
+
+.author-card__label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}

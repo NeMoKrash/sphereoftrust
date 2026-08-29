@@ -4,26 +4,28 @@ import { clearToken, getToken } from '../adminAuth'
 import { getAdminMe } from '../api'
 import './AdminLayout.css'
 
-export default function AdminLayout() {
+export default function SuperAdminLayout() {
   const navigate = useNavigate()
   const token = getToken()
-  const [checked, setChecked] = useState(false)
-  const [isSuperAdmin, setIsSuperAdmin] = useState(false)
+  const [status, setStatus] = useState('checking') // checking | super | not-super
 
   useEffect(() => {
     if (!token) return
     getAdminMe(token)
-      .then((me) => setIsSuperAdmin(me.isSuperAdmin))
-      .catch(() => {})
-      .finally(() => setChecked(true))
+      .then((me) => setStatus(me.isSuperAdmin ? 'super' : 'not-super'))
+      .catch(() => setStatus('not-super'))
   }, [token])
 
   if (!token) {
     return <Navigate to="/admin/login" replace />
   }
 
-  if (checked && isSuperAdmin) {
-    return <Navigate to="/superadmin" replace />
+  if (status === 'checking') {
+    return <p className="subtitle" style={{ padding: 32 }}>Проверяем доступ…</p>
+  }
+
+  if (status === 'not-super') {
+    return <Navigate to="/admin" replace />
   }
 
   const handleLogout = () => {
@@ -34,17 +36,17 @@ export default function AdminLayout() {
   return (
     <div className="admin-layout">
       <header className="admin-header">
-        <div className="admin-header__title">Сфера доверия · Кабинет психолога</div>
+        <div className="admin-header__title">Сфера доверия · Супер-админ</div>
 
         <nav className="admin-header__nav">
-          <NavLink to="/admin" end className={({ isActive }) => (isActive ? 'is-active' : '')}>
-            Статистика
+          <NavLink to="/superadmin" end className={({ isActive }) => (isActive ? 'is-active' : '')}>
+            Статистика РК
           </NavLink>
           <NavLink
-            to="/admin/questions"
+            to="/superadmin/admins"
             className={({ isActive }) => (isActive ? 'is-active' : '')}
           >
-            Вопросы
+            Психологи
           </NavLink>
         </nav>
 

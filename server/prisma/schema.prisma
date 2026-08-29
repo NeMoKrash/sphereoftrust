@@ -19,12 +19,13 @@ model Question {
 }
 
 model Admin {
-  id           Int    @id @default(autoincrement())
-  username     String @unique
+  id           Int     @id @default(autoincrement())
+  username     String  @unique
   passwordHash String
   region       String
   city         String
   school       String
+  isSuperAdmin Boolean @default(false)
 }
 
 model Submission {
