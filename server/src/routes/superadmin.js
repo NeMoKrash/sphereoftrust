@@ -63,7 +63,7 @@ router.delete('/admins/:id', requireSuperAdmin, async (req, res) => {
 // --- Общестрановая статистика ---
 
 router.get('/stats', requireSuperAdmin, async (req, res) => {
-  const { region, school, grade, gradeLetter } = req.query;
+  const { region, city, school, grade, gradeLetter } = req.query;
 
   // Обзор всегда считается по всем данным целиком, независимо от фильтров —
   // это верхнеуровневая картина по стране.
@@ -107,6 +107,7 @@ router.get('/stats', requireSuperAdmin, async (req, res) => {
   // Отфильтрованный срез — по тем параметрам, что выбрал супер-админ.
   const where = {};
   if (region) where.region = region;
+  if (city) where.city = city;
   if (school) where.school = String(school).trim();
   if (grade) where.grade = Number(grade);
   if (gradeLetter && GRADE_LETTERS.includes(gradeLetter)) where.gradeLetter = gradeLetter;

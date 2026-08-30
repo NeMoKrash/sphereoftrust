@@ -92,6 +92,7 @@ export function deleteSuperAdminAdmin(token, id) {
 export function getSuperAdminStats(token, filters = {}) {
   const params = new URLSearchParams()
   if (filters.region) params.set('region', filters.region)
+  if (filters.city) params.set('city', filters.city)
   if (filters.school) params.set('school', filters.school)
   if (filters.grade) params.set('grade', filters.grade)
   if (filters.gradeLetter) params.set('gradeLetter', filters.gradeLetter)

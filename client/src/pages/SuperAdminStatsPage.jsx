@@ -23,13 +23,14 @@ export default function SuperAdminStatsPage() {
 
   const [stats, setStats] = useState(null)
   const [region, setRegion] = useState('')
+  const [city, setCity] = useState('')
   const [school, setSchool] = useState('')
   const [grade, setGrade] = useState('')
   const [gradeLetter, setGradeLetter] = useState('')
   const [error, setError] = useState('')
 
   useEffect(() => {
-    getSuperAdminStats(token, { region, school, grade, gradeLetter })
+    getSuperAdminStats(token, { region, city, school, grade, gradeLetter })
       .then(setStats)
       .catch((err) => {
         if (err.message.toLowerCase().includes('токен')) {
@@ -40,13 +41,19 @@ export default function SuperAdminStatsPage() {
         setError(err.message)
       })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [region, school, grade, gradeLetter])
+  }, [region, city, school, grade, gradeLetter])
 
   if (error) return <p className="field-error">{error}</p>
   if (!stats) return <p className="subtitle">Загрузка статистики…</p>
 
   const { overview, filtered } = stats
   const scaleEntries = Object.entries(filtered.scaleAverages)
+  const regionData = REGIONS.find((r) => r.ru === region)
+
+  const handleRegionChange = (value) => {
+    setRegion(value)
+    setCity('')
+  }
 
   return (
     <div className="dashboard">
@@ -80,11 +87,23 @@ export default function SuperAdminStatsPage() {
       <div className="dashboard__filters card">
         <div className="field">
           <label>Область</label>
-          <select value={region} onChange={(e) => setRegion(e.target.value)}>
+          <select value={region} onChange={(e) => handleRegionChange(e.target.value)}>
             <option value="">Все области</option>
             {REGIONS.map((r) => (
               <option key={r.ru} value={r.ru}>
                 {r.ru}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="field">
+          <label>Район / город</label>
+          <select value={city} onChange={(e) => setCity(e.target.value)} disabled={!region}>
+            <option value="">Все районы</option>
+            {regionData?.cities.map((c) => (
+              <option key={c.ru} value={c.ru}>
+                {c.ru}
               </option>
             ))}
           </select>
