@@ -63,7 +63,7 @@ router.delete('/admins/:id', requireSuperAdmin, async (req, res) => {
 // --- Общестрановая статистика ---
 
 router.get('/stats', requireSuperAdmin, async (req, res) => {
-  const { region, city, school, grade, gradeLetter } = req.query;
+  const { region, school, grade, gradeLetter } = req.query;
 
   // Обзор всегда считается по всем данным целиком, независимо от фильтров —
   // это верхнеуровневая картина по стране.
@@ -77,23 +77,17 @@ router.get('/stats', requireSuperAdmin, async (req, res) => {
     },
   });
 
-  // Считаем "безопасна ли анкета" один раз для каждой — переиспользуем это
-  // и для странового обзора, и для разбивки по районам/школам ниже.
-  const withSafety = allSubmissions.map((s) => {
-    const scales = calcScales(s.answers.map((a) => ({ score: a.score, scale: a.question.scale })));
-    const isSafe = SCALE_KEYS.every((key) => scales[key].score <= 1.0);
-    return { region: s.region, city: s.city, school: s.school, isSafe };
-  });
-
   const schoolKeys = new Set();
   const byRegion = {};
   for (const r of REGIONS) byRegion[r] = { submissions: 0, safeCount: 0 };
 
-  for (const s of withSafety) {
+  for (const s of allSubmissions) {
     schoolKeys.add(`${s.region}|${s.city}|${s.school}`);
+    const scales = calcScales(s.answers.map((a) => ({ score: a.score, scale: a.question.scale })));
+    const isSafe = SCALE_KEYS.every((key) => scales[key].score <= 1.0);
     if (byRegion[s.region]) {
       byRegion[s.region].submissions += 1;
-      if (s.isSafe) byRegion[s.region].safeCount += 1;
+      if (isSafe) byRegion[s.region].safeCount += 1;
     }
   }
 
@@ -110,49 +104,9 @@ router.get('/stats', requireSuperAdmin, async (req, res) => {
     perRegion,
   };
 
-  // Каскадная разбивка для клик-навигации супер-админа: страна → область →
-  // район → школа. На каждом шаге группируем уже вычисленные withSafety.
-  const groupBy = (items, keyFn) => {
-    const map = new Map();
-    for (const item of items) {
-      const key = keyFn(item);
-      if (!map.has(key)) map.set(key, { submissions: 0, safeCount: 0 });
-      const bucket = map.get(key);
-      bucket.submissions += 1;
-      if (item.isSafe) bucket.safeCount += 1;
-    }
-    return [...map.entries()]
-      .map(([key, bucket]) => ({
-        key,
-        submissions: bucket.submissions,
-        safetyIndex: Math.round((bucket.safeCount / bucket.submissions) * 1000) / 10,
-      }))
-      .sort((a, b) => b.submissions - a.submissions);
-  };
-
-  let byDistrict = null;
-  let bySchool = null;
-
-  if (region && !school) {
-    const inRegion = withSafety.filter((s) => s.region === region);
-    if (city) {
-      bySchool = groupBy(
-        inRegion.filter((s) => s.city === city),
-        (s) => s.school
-      ).map((r) => ({ school: r.key, submissions: r.submissions, safetyIndex: r.safetyIndex }));
-    } else {
-      byDistrict = groupBy(inRegion, (s) => s.city).map((r) => ({
-        city: r.key,
-        submissions: r.submissions,
-        safetyIndex: r.safetyIndex,
-      }));
-    }
-  }
-
   // Отфильтрованный срез — по тем параметрам, что выбрал супер-админ.
   const where = {};
   if (region) where.region = region;
-  if (city) where.city = city;
   if (school) where.school = String(school).trim();
   if (grade) where.grade = Number(grade);
   if (gradeLetter && GRADE_LETTERS.includes(gradeLetter)) where.gradeLetter = gradeLetter;
@@ -197,7 +151,6 @@ router.get('/stats', requireSuperAdmin, async (req, res) => {
 
   res.json({
     overview,
-    drill: { byDistrict, bySchool },
     filtered: {
       total,
       scaleAverages,

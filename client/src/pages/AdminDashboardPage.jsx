@@ -128,7 +128,13 @@ export default function AdminDashboardPage() {
               <XAxis dataKey="name" tick={{ fontSize: 12 }} />
               <YAxis allowDecimals={false} tick={{ fontSize: 12 }} />
               <Tooltip />
-              <Bar dataKey="value" fill="var(--color-primary)" radius={[8, 8, 0, 0]} />
+              <Bar
+                dataKey="value"
+                fill="var(--color-primary)"
+                radius={[8, 8, 0, 0]}
+                label={{ position: 'top', fontSize: 13, fontWeight: 700, fill: 'var(--color-text)' }}
+                minPointSize={2}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>
