@@ -14,6 +14,7 @@ export default function SiteHeader() {
     <header className="site-header">
       <div className="site-header__row">
         <Link to="/" className="site-header__logo" onClick={close}>
+          <img src="/logo.svg" alt="" className="site-header__logo-icon" />
           {t('siteName')}
         </Link>
 

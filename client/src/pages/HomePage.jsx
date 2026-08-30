@@ -4,6 +4,7 @@ import { getPublicSummary } from '../api'
 import { useLanguage } from '../context/LanguageContext'
 import { REGIONS } from '../data/regions'
 import SiteHeader from '../components/SiteHeader'
+import SiteFooter from '../components/SiteFooter'
 import StatCard from '../components/StatCard'
 import './HomePage.css'
 
@@ -61,6 +62,8 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      <SiteFooter />
     </div>
   )
 }

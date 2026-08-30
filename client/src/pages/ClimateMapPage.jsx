@@ -3,6 +3,7 @@ import { getPublicSummary } from '../api'
 import { useLanguage } from '../context/LanguageContext'
 import { REGIONS } from '../data/regions'
 import SiteHeader from '../components/SiteHeader'
+import SiteFooter from '../components/SiteFooter'
 import StatCard from '../components/StatCard'
 import './ClimateMapPage.css'
 
@@ -74,6 +75,8 @@ export default function ClimateMapPage() {
           )}
         </div>
       </div>
+
+      <SiteFooter />
     </div>
   )
 }

@@ -1,0 +1,32 @@
+.site-footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 24px 32px;
+  border-top: 1px solid var(--color-border);
+}
+
+.site-footer__logo {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+}
+
+.site-footer__name {
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.site-footer__note {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  margin-top: 2px;
+  max-width: 520px;
+}
+
+@media (max-width: 640px) {
+  .site-footer {
+    padding: 20px;
+  }
+}

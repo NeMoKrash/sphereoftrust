@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { adminLogin } from '../api'
 import { setToken } from '../adminAuth'
+import './AdminLoginPage.css'
 
 export default function AdminLoginPage() {
   const navigate = useNavigate()
@@ -28,6 +29,8 @@ export default function AdminLoginPage() {
   return (
     <div className="page">
       <div className="page-narrow">
+        <img src="/logo.svg" alt="Сфера доверия" className="admin-login__logo" />
+
         <div className="card">
           <div className="eyebrow">Сфера доверия</div>
           <h1 className="title">Вход</h1>

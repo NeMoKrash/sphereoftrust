@@ -5,6 +5,7 @@ import { useLanguage } from '../context/LanguageContext'
 import { REGIONS } from '../data/regions'
 import { GRADE_LETTERS } from '../data/gradeLetters'
 import SiteHeader from '../components/SiteHeader'
+import SiteFooter from '../components/SiteFooter'
 import './StartPage.css'
 
 const GRADES = Array.from({ length: 11 }, (_, i) => i + 1)
@@ -164,6 +165,8 @@ export default function StartPage() {
           </div>
         </div>
       </div>
+
+      <SiteFooter />
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import SiteHeader from '../components/SiteHeader'
+import SiteFooter from '../components/SiteFooter'
 import './AboutPage.css'
 
 export default function AboutPage() {
@@ -32,6 +33,8 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
+
+      <SiteFooter />
     </div>
   )
 }

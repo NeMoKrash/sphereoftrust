@@ -1,4 +1,5 @@
 import SiteHeader from '../components/SiteHeader'
+import SiteFooter from '../components/SiteFooter'
 import './AuthorPage.css'
 
 export default function AuthorPage() {
@@ -20,6 +21,8 @@ export default function AuthorPage() {
           </div>
         </div>
       </div>
+
+      <SiteFooter />
     </div>
   )
 }

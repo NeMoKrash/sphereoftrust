@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../context/LanguageContext'
 import SiteHeader from '../components/SiteHeader'
+import SiteFooter from '../components/SiteFooter'
 import './ThankYouPage.css'
 
 export default function ThankYouPage() {
@@ -23,6 +24,8 @@ export default function ThankYouPage() {
           </div>
         </div>
       </div>
+
+      <SiteFooter />
     </div>
   )
 }

@@ -15,11 +15,20 @@
 }
 
 .site-header__logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
   font-weight: 800;
   font-size: 17px;
   color: var(--color-text);
   text-decoration: none;
   margin-right: auto;
+}
+
+.site-header__logo-icon {
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
 }
 
 .site-header__nav {
