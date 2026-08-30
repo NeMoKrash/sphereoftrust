@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { getQuestions, submitSurvey } from '../api'
 import { useSurvey } from '../context/SurveyContext'
 import { useLanguage } from '../context/LanguageContext'
+import SiteHeader from '../components/SiteHeader'
 import QuestionCard from '../components/QuestionCard'
 import './SurveyPage.css'
 
@@ -31,24 +32,33 @@ export default function SurveyPage() {
 
   if (loading) {
     return (
-      <div className="page">
-        <p className="subtitle">{t('survey.loading')}</p>
+      <div className="survey-page">
+        <SiteHeader />
+        <div className="page">
+          <p className="subtitle">{t('survey.loading')}</p>
+        </div>
       </div>
     )
   }
 
   if (error) {
     return (
-      <div className="page">
-        <p className="field-error">{error}</p>
+      <div className="survey-page">
+        <SiteHeader />
+        <div className="page">
+          <p className="field-error">{error}</p>
+        </div>
       </div>
     )
   }
 
   if (questions.length === 0) {
     return (
-      <div className="page">
-        <p className="subtitle">Вопросы пока не добавлены.</p>
+      <div className="survey-page">
+        <SiteHeader />
+        <div className="page">
+          <p className="subtitle">Вопросы пока не добавлены.</p>
+        </div>
       </div>
     )
   }
@@ -86,40 +96,44 @@ export default function SurveyPage() {
   }
 
   return (
-    <div className="page">
-      <div className="page-narrow">
-        <div className="survey-progress">
-          <div className="survey-progress__bar" style={{ width: `${progress}%` }} />
-        </div>
+    <div className="survey-page">
+      <SiteHeader />
 
-        <div className="card">
-          <QuestionCard
-            number={question.number}
-            total={questions.length}
-            text={questionText}
-            value={currentValue}
-            onChange={(score) => answerQuestion(question.id, score)}
-          />
+      <div className="page">
+        <div className="page-narrow">
+          <div className="survey-progress">
+            <div className="survey-progress__bar" style={{ width: `${progress}%` }} />
+          </div>
 
-          {error && <div className="field-error" style={{ marginTop: 14 }}>{error}</div>}
+          <div className="card">
+            <QuestionCard
+              number={question.number}
+              total={questions.length}
+              text={questionText}
+              value={currentValue}
+              onChange={(score) => answerQuestion(question.id, score)}
+            />
 
-          <div className="btn-row">
-            <button
-              type="button"
-              className="btn btn-ghost"
-              onClick={() => setIndex((i) => Math.max(0, i - 1))}
-              disabled={index === 0 || submitting}
-            >
-              {t('survey.back')}
-            </button>
-            <button
-              type="button"
-              className="btn btn-primary btn-block"
-              onClick={handleNext}
-              disabled={currentValue === undefined || submitting}
-            >
-              {isLast ? (submitting ? t('survey.submitting') : t('survey.finish')) : t('survey.next')}
-            </button>
+            {error && <div className="field-error" style={{ marginTop: 14 }}>{error}</div>}
+
+            <div className="btn-row">
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => setIndex((i) => Math.max(0, i - 1))}
+                disabled={index === 0 || submitting}
+              >
+                {t('survey.back')}
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary btn-block"
+                onClick={handleNext}
+                disabled={currentValue === undefined || submitting}
+              >
+                {isLast ? (submitting ? t('survey.submitting') : t('survey.finish')) : t('survey.next')}
+              </button>
+            </div>
           </div>
         </div>
       </div>
