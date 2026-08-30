@@ -14,6 +14,11 @@ export default function QuestionCard({ number, total, text, value, onChange }) {
 
   return (
     <div className="question-card">
+      <div className="question-card__brand">
+        <img src="/logo.svg" alt="" className="question-card__brand-icon" />
+        {t('siteName')}
+      </div>
+
       <div className="question-card__number">
         {t('survey.question')} {number} {t('survey.of')} {total}
       </div>

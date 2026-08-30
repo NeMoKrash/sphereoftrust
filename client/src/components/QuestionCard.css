@@ -1,3 +1,19 @@
+.question-card__brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  margin-bottom: 16px;
+}
+
+.question-card__brand-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
 .question-card__number {
   font-size: 13px;
   font-weight: 700;
