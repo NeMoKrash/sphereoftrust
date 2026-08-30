@@ -51,6 +51,20 @@ button {
   max-width: 1100px;
 }
 
+/* Страницы с подвалом: внешняя обёртка растягивается на весь экран
+   колонкой, а .page занимает только своё место (flex: 1), поэтому
+   подвал всегда сразу под контентом, а не с разрывом внизу экрана. */
+.page-with-footer {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-with-footer > .page {
+  flex: 1;
+  min-height: 0;
+}
+
 .card {
   background: var(--color-surface);
   border-radius: var(--radius-lg);

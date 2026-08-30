@@ -4,7 +4,7 @@ import './AuthorPage.css'
 
 export default function AuthorPage() {
   return (
-    <div className="author-page">
+    <div className="author-page page-with-footer">
       <SiteHeader />
 
       <div className="page">

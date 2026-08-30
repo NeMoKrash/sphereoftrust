@@ -8,7 +8,7 @@ export default function ThankYouPage() {
   const { t } = useLanguage()
 
   return (
-    <div className="thankyou-page">
+    <div className="thankyou-page page-with-footer">
       <SiteHeader />
 
       <div className="page">

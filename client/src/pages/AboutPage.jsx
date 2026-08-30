@@ -8,7 +8,7 @@ export default function AboutPage() {
   const { t } = useLanguage()
 
   return (
-    <div className="about-page">
+    <div className="about-page page-with-footer">
       <SiteHeader />
 
       <div className="page">

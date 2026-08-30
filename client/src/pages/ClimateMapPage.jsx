@@ -30,7 +30,7 @@ export default function ClimateMapPage() {
   }
 
   return (
-    <div className="climate-page">
+    <div className="climate-page page-with-footer">
       <SiteHeader />
 
       <div className="page">

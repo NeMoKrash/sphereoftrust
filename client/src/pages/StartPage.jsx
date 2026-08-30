@@ -62,7 +62,7 @@ export default function StartPage() {
   }
 
   return (
-    <div className="start-page">
+    <div className="start-page page-with-footer">
       <SiteHeader />
 
       <div className="page">
