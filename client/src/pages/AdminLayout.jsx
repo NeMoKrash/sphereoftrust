@@ -34,7 +34,7 @@ export default function AdminLayout() {
   return (
     <div className="admin-layout">
       <header className="admin-header">
-        <div className="admin-header__title">Сфера доверия · Кабинет психолога</div>
+        <div className="admin-header__title">Сенім аясы / Сфера доверия · Кабинет психолога</div>
 
         <nav className="admin-header__nav">
           <NavLink to="/admin" end className={({ isActive }) => (isActive ? 'is-active' : '')}>

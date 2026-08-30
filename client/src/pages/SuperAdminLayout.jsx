@@ -36,7 +36,7 @@ export default function SuperAdminLayout() {
   return (
     <div className="admin-layout">
       <header className="admin-header">
-        <div className="admin-header__title">Сфера доверия · Супер-админ</div>
+        <div className="admin-header__title">Сенім аясы / Сфера доверия · Супер-админ</div>
 
         <nav className="admin-header__nav">
           <NavLink to="/superadmin" end className={({ isActive }) => (isActive ? 'is-active' : '')}>

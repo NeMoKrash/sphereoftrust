@@ -7,14 +7,15 @@
 }
 
 .hero-title {
-  font-size: 44px;
+  font-size: 34px;
+  line-height: 1.25;
   color: var(--color-primary);
   margin-top: 4px;
 }
 
 @media (max-width: 640px) {
   .hero-title {
-    font-size: 32px;
+    font-size: 24px;
   }
 }
 

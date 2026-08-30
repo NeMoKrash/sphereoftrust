@@ -29,10 +29,10 @@ export default function AdminLoginPage() {
   return (
     <div className="page">
       <div className="page-narrow">
-        <img src="/logo.svg" alt="Сфера доверия" className="admin-login__logo" />
+        <img src="/logo.svg" alt="Сенім аясы / Сфера доверия" className="admin-login__logo" />
 
         <div className="card">
-          <div className="eyebrow">Сфера доверия</div>
+          <div className="eyebrow">Сенім аясы / Сфера доверия</div>
           <h1 className="title">Вход</h1>
           <p className="subtitle">Кабинет психолога — доступ только для специалистов школы</p>
 

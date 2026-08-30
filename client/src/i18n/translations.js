@@ -1,6 +1,6 @@
 export const translations = {
   ru: {
-    siteName: 'Сфера доверия',
+    siteName: 'Сенім аясы / Сфера доверия',
 
     'nav.about': 'О проекте',
     'nav.survey': 'Пройти опрос',
@@ -78,7 +78,7 @@ export const translations = {
   },
 
   kz: {
-    siteName: 'Сенім аясы',
+    siteName: 'Сенім аясы / Сфера доверия',
 
     'nav.about': 'Жоба туралы',
     'nav.survey': 'Сауалнамадан өту',
